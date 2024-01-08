@@ -1,0 +1,218 @@
+Q.1 Can you explain the logic and working of the Tower of Hanoi algorithm by writing a Java program?
+How does the recursion work, and how are the movements of disks between rods accomplished?
+
+
+Answer:
+
+public class TowerOfHanoi {
+
+    public static void main(String[] args) {
+        int numberOfDisks = 3;
+        char sourceRod = 'A';
+        char auxiliaryRod = 'B';
+        char destinationRod = 'C';
+
+        solveTowerOfHanoi(numberOfDisks, sourceRod, auxiliaryRod, destinationRod);
+    }
+
+    public static void solveTowerOfHanoi(int n, char source, char auxiliary, char destination) {
+        if (n == 1) {
+            System.out.println("Move disk 1 from rod " + source + " to rod " + destination);
+            return;
+        }
+
+        solveTowerOfHanoi(n - 1, source, destination, auxiliary);
+        System.out.println("Move disk " + n + " from rod " + source + " to rod " + destination);
+        solveTowerOfHanoi(n - 1, auxiliary, source, destination);
+    }
+}
+
+
+
+
+Q.2 Given two strings word1 and word2, return the minimum number of operations required to convert word1
+to word2.
+Example 1:
+Input: word1 = "horse", word2 = "ros"
+Output: 3
+Explanation:
+horse -> rorse (replace 'h' with 'r')
+rorse -> rose (remove 'r')
+rose -> ros (remove 'e')
+Example 2:
+Input: word1 = "intention", word2 = "execution"
+Output: 5
+Explanation:
+intention -> inention (remove 't')
+inention -> enention (replace 'i' with 'e')
+enention -> exention (replace 'n' with 'x')
+exention -> exection (replace 'n' with 'c')
+exection -> execution (insert 'u')
+
+
+
+
+Answer: 
+
+public class EditDistance {
+
+    public static void main(String[] args) {
+        String word1 = "horse";
+        String word2 = "ros";
+        int result1 = minDistance(word1, word2);
+        System.out.println("Minimum number of operations for Example 1: " + result1);
+
+        String word3 = "intention";
+        String word4 = "execution";
+        int result2 = minDistance(word3, word4);
+        System.out.println("Minimum number of operations for Example 2: " + result2);
+    }
+
+    public static int minDistance(String word1, String word2) {
+        int m = word1.length();
+        int n = word2.length();
+
+        // Create a 2D array to store the minimum number of operations
+        int[][] dp = new int[m + 1][n + 1];
+
+        // Initialize the first row and column
+        for (int i = 0; i <= m; i++) {
+            for (int j = 0; j <= n; j++) {
+                if (i == 0) {
+                    dp[i][j] = j;
+                } else if (j == 0) {
+                    dp[i][j] = i;
+                } else if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else {
+                    dp[i][j] = 1 + Math.min(Math.min(dp[i - 1][j], dp[i][j - 1]), dp[i - 1][j - 1]);
+                }
+            }
+        }
+
+        return dp[m][n];
+    }
+}
+
+
+
+Q. 3 Print the max value of the array [ 13, 1, -3, 22, 5].
+
+
+public class MaxValueInArray {
+
+    public static void main(String[] args) {
+        int[] array = {13, 1, -3, 22, 5};
+        int maxValue = findMaxValue(array);
+        System.out.println("The maximum value in the array is: " + maxValue);
+    }
+
+    public static int findMaxValue(int[] array) {
+        if (array == null || array.length == 0) {
+            throw new IllegalArgumentException("Array is empty or null.");
+        }
+
+        int maxValue = array[0];
+
+        for (int i = 1; i < array.length; i++) {
+            if (array[i] > maxValue) {
+                maxValue = array[i];
+            }
+        }
+
+        return maxValue;
+    }
+}
+The maximum value in the array is: 22
+
+
+Q.4 Find the sum of the values of the array [92, 23, 15, -20, 10].
+
+
+
+Answer:
+public class ArraySum {
+
+    public static void main(String[] args) {
+        int[] array = {92, 23, 15, -20, 10};
+        int sum = findSum(array);
+        System.out.println("The sum of the values in the array is: " + sum);
+    }
+
+    public static int findSum(int[] array) {
+        if (array == null || array.length == 0) {
+            throw new IllegalArgumentException("Array is empty or null.");
+        }
+
+        int sum = 0;
+
+        for (int value : array) {
+            sum += value;
+        }
+
+        return sum;
+    }
+}
+   
+
+The sum of the values in the array is: 120
+
+
+
+Q.5 Given a number n. Print if it is an armstrong number or not.An armstrong number is a number if the sum
+of every digit in that number raised to the power of total digits in that number is equal to the number.
+Example : 153 = 1^3 + 5^3 + 3^3 = 1 + 125 + 27 = 153 hence 153 is an armstrong number. (Easy)
+Input1 : 153
+Output1 : Yes
+Input 2 : 134
+Output2 : No
+
+
+
+Answer:
+import java.util.Scanner;
+
+public class ArmstrongNumber {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter a number: ");
+        int number = scanner.nextInt();
+
+        if (isArmstrongNumber(number)) {
+            System.out.println("Yes, " + number + " is an Armstrong number.");
+        } else {
+            System.out.println("No, " + number + " is not an Armstrong number.");
+        }
+
+        scanner.close();
+    }
+
+    public static boolean isArmstrongNumber(int number) {
+        int originalNumber = number;
+        int totalDigits = countDigits(number);
+        int sum = 0;
+
+        while (number > 0) {
+            int digit = number % 10;
+            sum += Math.pow(digit, totalDigits);
+            number /= 10;
+        }
+
+        return sum == originalNumber;
+    }
+
+    public static int countDigits(int number) {
+        int count = 0;
+
+        while (number > 0) {
+            number /= 10;
+            count++;
+        }
+
+        return count;
+    }
+}
+
+
